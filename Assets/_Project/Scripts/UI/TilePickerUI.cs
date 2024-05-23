@@ -18,6 +18,11 @@ public class TilePickerUI : MonoBehaviour
         SetNoTileText();
         clearChoiceButton.onClick.AddListener(ClearChosenTile);
         TilePicker.OnTileChosen += SetChosenTileText;
+        ClickActionHandler.ChangedActionType += actionType =>
+        {
+            if (actionType != TileClickActionType.Paint)
+                ClearChosenTile();
+        };
     }
     
     private void ClearChosenTile()
@@ -36,5 +41,6 @@ public class TilePickerUI : MonoBehaviour
     {
         chosenTileText.text = tile.name;
         chosenTileText.color = tileSelectedColor;
+        ClickActionHandler.SetActionType(TileClickActionType.Paint);
     }
 }

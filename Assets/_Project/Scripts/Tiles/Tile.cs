@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Tiles
 {
@@ -8,9 +9,16 @@ namespace Tiles
         [SerializeField] private TileData data;
         [SerializeField] private SpriteRenderer tileSprite;
         [SerializeField] private SpriteRenderer iconSprite;
-        
+        private Node node;
+
         public TileData Data => data;
         public SpriteRenderer IconSprite => iconSprite;
+        public Node Node => node;
+        
+        public void Initialize(Node node)
+        {
+            this.node = node;
+        }
 
         // Assign the correct sprite related to the data asset
         private void OnValidate()
@@ -29,12 +37,24 @@ namespace Tiles
         //Get when a player clicks on the SpriteRenderer
         private void OnMouseDown()
         {
-            TileData dataToPaint = TilePainter.OnTilePainted?.Invoke();
-            if (dataToPaint)
+            switch(ClickActionHandler.ActionType)
             {
-                data = dataToPaint;
-                PaintTile();
+                case TileClickActionType.Paint:
+                    TileData dataToPaint = TilePainter.OnTilePainted?.Invoke();
+                    if (dataToPaint)
+                    {
+                        data = dataToPaint;
+                        PaintTile();
+                    }
+                    break;
+                case TileClickActionType.SetStart:
+                    PathfinderHandler.OnStartNodeSet?.Invoke(Node);
+                    break;
+                case TileClickActionType.SetEnd:
+                    PathfinderHandler.OnEndNodeSet?.Invoke(Node);
+                    break;
             }
+            
         }
     }
 }

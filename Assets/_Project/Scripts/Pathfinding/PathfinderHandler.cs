@@ -6,15 +6,24 @@ public class PathfinderHandler : MonoBehaviour
 {
     public static Action OnNewPathRequested;
     public static Action OnPathFinishedDrawing;
+    public static Action<Node> OnStartNodeSet;
+    public static Action<Node> OnEndNodeSet;
     
+    [Header("Pathfinding")]
     [SerializeField] private Node startNode;
     [SerializeField] private Node endNode;
     [SerializeField] private PathLineDrawer pathDrawer;
 
+    [Header("Visuals")] 
+    [SerializeField] private Sprite StartSprite;
+    [SerializeField] private Sprite EndSprite;
+    
     private IList<ICell> path;
 
     private void Start()
     {
+        startNode.Tile.IconSprite.sprite = StartSprite;
+        endNode.Tile.IconSprite.sprite = EndSprite;
         Dictionary<Hex, ICell> nodes = GetNodesDictionary();
 
         HexPathfinder pathfinder = new();
@@ -26,6 +35,8 @@ public class PathfinderHandler : MonoBehaviour
         }
         
         OnNewPathRequested += GenerateNewPath;
+        OnStartNodeSet += SetStartNode;
+        OnEndNodeSet += SetEndNode;
     }
 
     private Dictionary<Hex, ICell> GetNodesDictionary()
@@ -48,5 +59,21 @@ public class PathfinderHandler : MonoBehaviour
         {
             pathDrawer.DrawPath(path);
         }
+    }
+    
+    private void SetStartNode(Node node)
+    {
+        startNode.Tile.IconSprite.sprite = null;
+        startNode = node;
+        startNode.Tile.IconSprite.sprite = StartSprite;
+        pathDrawer.ClearPath();
+    }
+    
+    private void SetEndNode(Node node)
+    {
+        endNode.Tile.IconSprite.sprite = null;
+        endNode = node;
+        endNode.Tile.IconSprite.sprite = EndSprite;
+        pathDrawer.ClearPath();
     }
 }

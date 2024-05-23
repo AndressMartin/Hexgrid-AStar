@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Tiles;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ public class Node : MonoBehaviour, ICell
     public int Weight => Tile.Data.Weight;
     public Tile Tile => tile;
     public Vector3 CellPosition => transform.position;
+
+    private void Start()
+    {
+        Tile.Initialize(this);
+    }
 
     private void ApplyTransform()
     {

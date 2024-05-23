@@ -43,4 +43,9 @@ public class PathLineDrawer : MonoBehaviour
         }
         PathfinderHandler.OnPathFinishedDrawing?.Invoke();
     }
+
+    public void ClearPath()
+    {
+        lineRenderer.positionCount = 0;
+    }
 }
