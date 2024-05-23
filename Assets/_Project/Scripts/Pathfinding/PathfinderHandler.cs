@@ -3,32 +3,18 @@ using UnityEngine;
 
 public class PathfinderHandler : MonoBehaviour
 {
-    [Header("Node Sprites")]
-    [SerializeField] private Sprite startNodeIconSprite;
-    [SerializeField] private Sprite endNodeIconSprite;
-    
-    [Header("Path Setup")]
     [SerializeField] private Node startNode;
     [SerializeField] private Node endNode;
     [SerializeField] private LineRenderer lineRenderer;
 
-    private List<Hex> path;
+    private IList<ICell> path;
 
     private void Start()
     {
-        if (!startNode || !endNode)
-        {
-            Debug.LogWarning("Start or End node is not assigned.");
-            return;
-        }
-        
-        Dictionary<Hex, Node> nodes = GetNodesDictionary();
-        
-        startNode.Tile.IconSprite.sprite = startNodeIconSprite;
-        endNode.Tile.IconSprite.sprite = endNodeIconSprite;
-        
+        Dictionary<Hex, ICell> nodes = GetNodesDictionary();
+
         HexPathfinder pathfinder = new();
-        path = pathfinder.FindPath(startNode.Hex, endNode.Hex, nodes);
+        path = pathfinder.FindPathOnMap(startNode, endNode, new HexMap(nodes));
 
         if (lineRenderer != null && path.Count > 1)
         {
@@ -36,9 +22,9 @@ public class PathfinderHandler : MonoBehaviour
         }
     }
 
-    private Dictionary<Hex, Node> GetNodesDictionary()
+    private Dictionary<Hex, ICell> GetNodesDictionary()
     {
-        Dictionary<Hex, Node> nodes = new Dictionary<Hex, Node>();
+        Dictionary<Hex, ICell> nodes = new Dictionary<Hex, ICell>();
 
         foreach (Node node in FindObjectsOfType<Node>())
         {
@@ -54,9 +40,23 @@ public class PathfinderHandler : MonoBehaviour
 
         for (int i = 0; i < path.Count; i++)
         {
-            Hex hex = path[i];
-            Vector3 position = hex.ToWorld();
+            Vector3 position = path[i].CellPosition;
             lineRenderer.SetPosition(i, position);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (startNode != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(startNode.transform.position, 0.1f);
+        }
+
+        if (endNode != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(endNode.transform.position, 0.1f);
         }
     }
 }

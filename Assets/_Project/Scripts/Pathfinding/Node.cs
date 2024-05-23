@@ -4,7 +4,7 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Tile))]
-public class Node : MonoBehaviour
+public class Node : MonoBehaviour, ICell
 {
     private static Dictionary<Hex, Node> nodes = new();
 
@@ -17,8 +17,9 @@ public class Node : MonoBehaviour
 
     public Hex Hex => transform.position.ToHex();
     public Hex LocalHex => transform.localPosition.ToHex();
-    public float Weight => Tile.Data.Weight;
+    public int Weight => Tile.Data.Weight;
     public Tile Tile => tile;
+    public Vector3 CellPosition => transform.position;
 
     private void ApplyTransform()
     {

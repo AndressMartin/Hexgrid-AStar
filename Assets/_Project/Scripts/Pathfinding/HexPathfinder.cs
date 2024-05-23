@@ -1,40 +1,42 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class HexPathfinder
+public class HexPathfinder : IPathFinder
 {
-    public List<Hex> FindPath(Hex startHex, Hex endHex, Dictionary<Hex, Node> nodes)
+    public IList<ICell> FindPathOnMap(ICell cellStart, ICell cellEnd, IMap map)
     {
-        if (!nodes.ContainsKey(startHex) || !nodes.ContainsKey(endHex))
+        Dictionary<Hex, ICell> cells = map.Cells;
+
+        if (!cells.ContainsKey(cellStart.Hex) || !cells.ContainsKey(cellEnd.Hex))
         {
-            Debug.LogWarning("Start or End hex is not in the node dictionary.");
-            return new List<Hex>();
+            Debug.LogWarning("Start or End hex is not in the cell dictionary.");
+            return new List<ICell>();
         }
 
         // Initialize open and closed sets
         HashSet<Hex> closedSet = new HashSet<Hex>();
         PriorityQueue<Hex> openSet = new PriorityQueue<Hex>();
-        openSet.Enqueue(startHex, 0);
+        openSet.Enqueue(cellStart.Hex, 0);
 
         // Maps for costs and paths
         Dictionary<Hex, Hex> cameFrom = new Dictionary<Hex, Hex>();
-        Dictionary<Hex, float> gScore = new Dictionary<Hex, float> { { startHex, 0 } };
-        Dictionary<Hex, float> fScore = new Dictionary<Hex, float> { { startHex, HeuristicCostEstimate(startHex, endHex) } };
+        Dictionary<Hex, float> gScore = new Dictionary<Hex, float> { { cellStart.Hex, 0 } };
+        Dictionary<Hex, float> fScore = new Dictionary<Hex, float> { { cellStart.Hex, HeuristicCostEstimate(cellStart.Hex, cellEnd.Hex) } };
 
         // Loop until the open set is empty or the end node is reached
         while (openSet.Count > 0)
         {
             Hex current = openSet.Dequeue();
-            if (current.Equals(endHex))
-                return ReconstructPath(cameFrom, current);
+            if (current.Equals(cellEnd.Hex))
+                return ReconstructPath(cameFrom, current, cells);
 
             closedSet.Add(current);
             foreach (Hex neighbor in current.Neighbours())
             {
-                if (!nodes.ContainsKey(neighbor) || closedSet.Contains(neighbor) || nodes[neighbor].Weight < 0)
+                if (!cells.ContainsKey(neighbor) || closedSet.Contains(neighbor) || cells[neighbor].Weight < 0)
                     continue;
 
-                float tentative_gScore = gScore[current] + nodes[neighbor].Weight;
+                float tentative_gScore = gScore[current] + cells[neighbor].Weight; // Consider cell weight
                 if (!gScore.ContainsKey(neighbor))
                     gScore[neighbor] = float.MaxValue;
 
@@ -42,7 +44,7 @@ public class HexPathfinder
                 {
                     cameFrom[neighbor] = current;
                     gScore[neighbor] = tentative_gScore;
-                    fScore[neighbor] = gScore[neighbor] + HeuristicCostEstimate(neighbor, endHex);
+                    fScore[neighbor] = gScore[neighbor] + HeuristicCostEstimate(neighbor, cellEnd.Hex);
                     if (!openSet.Contains(neighbor))
                     {
                         openSet.Enqueue(neighbor, fScore[neighbor]);
@@ -51,7 +53,7 @@ public class HexPathfinder
             }
         }
 
-        return new List<Hex>(); // Return an empty list if a path is not found
+        return new List<ICell>(); // Return an empty list if a path is not found
     }
 
     private float HeuristicCostEstimate(Hex a, Hex b)
@@ -59,13 +61,13 @@ public class HexPathfinder
         return a.DistanceTo(b);
     }
 
-    private List<Hex> ReconstructPath(Dictionary<Hex, Hex> cameFrom, Hex current)
+    private IList<ICell> ReconstructPath(Dictionary<Hex, Hex> cameFrom, Hex current, Dictionary<Hex, ICell> cells)
     {
-        List<Hex> totalPath = new List<Hex> { current };
+        List<ICell> totalPath = new List<ICell> { cells[current] };
         while (cameFrom.ContainsKey(current))
         {
             current = cameFrom[current];
-            totalPath.Add(current);
+            totalPath.Add(cells[current]);
         }
         totalPath.Reverse();
         return totalPath;
