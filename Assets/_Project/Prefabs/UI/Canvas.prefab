@@ -317,6 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clearChoiceButton: {fileID: 669296171858573859}
   chosenTileText: {fileID: 8925444524948274203}
+  noTileSelectedColor: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
+  tileSelectedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5339054434506207271
 GameObject:
   m_ObjectHideFlags: 0

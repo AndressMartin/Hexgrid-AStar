@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 8cbc3033688f4df42a31b20ddc1ab4a2, type: 3}
   weight: 2
+  tileColor: {r: 0.745283, g: 0.45403194, b: 0.26366144, a: 1}

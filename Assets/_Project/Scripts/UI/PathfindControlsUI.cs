@@ -7,11 +7,19 @@ public class PathfindControlsUI : MonoBehaviour
     
     private void Start()
     {
+        generateNewPathButton.interactable = false;
         generateNewPathButton.onClick.AddListener(GenerateNewPath);
+        PathfinderHandler.OnPathFinishedDrawing += EnableGenerateNewPathButton;
     }
     
     private void GenerateNewPath()
     {
         PathfinderHandler.OnNewPathRequested?.Invoke();
+        generateNewPathButton.interactable = false;
+    }
+    
+    private void EnableGenerateNewPathButton()
+    {
+        generateNewPathButton.interactable = true;
     }
 }

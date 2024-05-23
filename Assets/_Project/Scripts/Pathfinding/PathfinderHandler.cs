@@ -5,6 +5,7 @@ using UnityEngine;
 public class PathfinderHandler : MonoBehaviour
 {
     public static Action OnNewPathRequested;
+    public static Action OnPathFinishedDrawing;
     
     [SerializeField] private Node startNode;
     [SerializeField] private Node endNode;

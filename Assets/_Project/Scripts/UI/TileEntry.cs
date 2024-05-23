@@ -15,6 +15,9 @@ public class TileEntry : MonoBehaviour
     {
         tileData = tile;
         buttonText.text = tileData.name;
+        ColorBlock buttonColors = button.colors;
+        buttonColors.normalColor = tileData.Color;
+        button.colors = buttonColors;
         weightText.text = tileData.Weight.ToString();
         button.onClick.AddListener(OnButtonClicked);
     }
