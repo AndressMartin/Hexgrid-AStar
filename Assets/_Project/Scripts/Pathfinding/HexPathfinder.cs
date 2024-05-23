@@ -31,10 +31,10 @@ public class HexPathfinder
             closedSet.Add(current);
             foreach (Hex neighbor in current.Neighbours())
             {
-                if (!nodes.ContainsKey(neighbor) || closedSet.Contains(neighbor))
+                if (!nodes.ContainsKey(neighbor) || closedSet.Contains(neighbor) || nodes[neighbor].Weight < 0)
                     continue;
 
-                float tentative_gScore = gScore[current] + 1; // Distance between nodes is assumed to be 1
+                float tentative_gScore = gScore[current] + nodes[neighbor].Weight;
                 if (!gScore.ContainsKey(neighbor))
                     gScore[neighbor] = float.MaxValue;
 

@@ -17,7 +17,7 @@ public class Node : MonoBehaviour
 
     public Hex Hex => transform.position.ToHex();
     public Hex LocalHex => transform.localPosition.ToHex();
-
+    public float Weight => Tile.Data.Weight;
     public Tile Tile => tile;
 
     private void ApplyTransform()
@@ -68,7 +68,7 @@ public class Node : MonoBehaviour
         for (int i = 0; i < Hex.AXIAL_DIRECTIONS.Length; i++)
         {
             Hex neighborHex = Hex + Hex.AXIAL_DIRECTIONS[i];
-            if (nodes.TryGetValue(neighborHex, out Node neighborNode))
+            if (nodes.TryGetValue(neighborHex, out Node neighborNode) && neighborNode.Weight >= 0) //Valid weights are 1 or greater
             {
                 neighbors.Add(new Neighbor(i, neighborNode));
                 neighborNode.RegisterNeighbor((i + 3) % 6, this); // Add this node as the neighbor's neighbor.
