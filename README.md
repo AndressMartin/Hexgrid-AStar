@@ -3,7 +3,7 @@
 Hi! This is a small test done showcasing a pathfinding system using a hex-based grid.
 
 For this pathfinder program I used the following resources:
-- [About Hexagons]([http://handlebarsjs.com/](https://www.redblobgames.com/grids/hexagons/)),
+- [About Hexagons](https://www.redblobgames.com/grids/hexagons/),
 - [AStar Algorithm](https://learn.unity.com/project/a-36369ng)
 
 ## How to Run
