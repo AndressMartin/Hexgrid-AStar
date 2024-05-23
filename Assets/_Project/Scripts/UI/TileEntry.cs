@@ -7,6 +7,7 @@ public class TileEntry : MonoBehaviour
 {
     [SerializeField] private Button button;
     [SerializeField] private TextMeshProUGUI buttonText;
+    [SerializeField] private TextMeshProUGUI weightText;
     
     private TileData tileData;
     
@@ -14,6 +15,7 @@ public class TileEntry : MonoBehaviour
     {
         tileData = tile;
         buttonText.text = tileData.name;
+        weightText.text = tileData.Weight.ToString();
         button.onClick.AddListener(OnButtonClicked);
     }
     

@@ -17,7 +17,5 @@ public class TileUIOptions : MonoBehaviour
             TileEntry tileEntry = Instantiate(tileEntryPrefab, tileOptionsParent);
             tileEntry.Initialize(tile);
         }
-        
     }
-    
 }
