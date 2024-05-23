@@ -8,11 +8,13 @@ public class TilePickerUI : MonoBehaviour
 {
     [SerializeField] private Button clearChoiceButton;
     [SerializeField] private TextMeshProUGUI chosenTileText;
+    [SerializeField] private TextMeshProUGUI tileInfoText;
     
     [Header("Text Colors")]
     [SerializeField] private Color noTileSelectedColor;
     [SerializeField] private Color tileSelectedColor;
-    
+    public static Action<Vector3, TileData> OnTileChosen;
+
     private void Start()
     {
         SetNoTileText();
@@ -23,6 +25,7 @@ public class TilePickerUI : MonoBehaviour
             if (actionType != TileClickActionType.Paint)
                 ClearChosenTile();
         };
+        OnTileChosen += (position, tile) => tileInfoText.text = $"{tile.name} {(Vector2)position} ";
     }
     
     private void ClearChosenTile()

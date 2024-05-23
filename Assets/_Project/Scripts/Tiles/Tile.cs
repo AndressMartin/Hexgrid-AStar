@@ -54,7 +54,7 @@ namespace Tiles
                     PathfinderHandler.OnEndNodeSet?.Invoke(Node);
                     break;
             }
-            
+            TilePickerUI.OnTileChosen?.Invoke(Node.CellPosition, data);
         }
     }
 }
