@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1501437278231416209}
   - component: {fileID: 6614142350764104650}
   - component: {fileID: 1923924095072935879}
+  - component: {fileID: 3358285648656368147}
   m_Layer: 0
   m_Name: HexCell
   m_TagString: Untagged
@@ -47,9 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3eda6cb4a2432ebc8f227ddf3557e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dir: 0
+  direction: 0
   tile: {fileID: 1923924095072935879}
-  neighbors: []
+  neighbors:
+  - direction: 0
+    node: {fileID: 0}
 --- !u!212 &6614142350764104650
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -117,6 +120,41 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: c980b2c3b551ff84ea88135e7b5ad67e, type: 2}
   tileSprite: {fileID: 6614142350764104650}
   iconSprite: {fileID: 6236762229169814703}
+--- !u!58 &3358285648656368147
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4246709626690029154}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &5503398144751612708
 GameObject:
   m_ObjectHideFlags: 0

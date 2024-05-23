@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tiles
 {
-    [CreateAssetMenu(menuName = "World/Tile")]
+    [CreateAssetMenu(menuName = "Grid/Tile")]
     public class TileData : ScriptableObject
     {
         [SerializeField] private Sprite sprite;

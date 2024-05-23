@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tiles
 {
@@ -16,10 +15,27 @@ namespace Tiles
         // Assign the correct sprite related to the data asset
         private void OnValidate()
         {
+            PaintTile();
+        }
+
+        private void PaintTile()
+        {
             if (!data || !tileSprite)
                 return;
-            
+
             tileSprite.sprite = data.Sprite;
+        }
+
+        //Get when a player clicks on the SpriteRenderer
+        private void OnMouseDown()
+        {
+            Debug.LogWarning($"Tile {data.name} was clicked.");
+            TileData dataToPaint = TilePainter.OnTilePainted?.Invoke();
+            if (dataToPaint)
+            {
+                data = dataToPaint;
+                PaintTile();
+            }
         }
     }
 }
