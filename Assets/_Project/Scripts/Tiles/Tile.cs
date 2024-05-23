@@ -29,7 +29,6 @@ namespace Tiles
         //Get when a player clicks on the SpriteRenderer
         private void OnMouseDown()
         {
-            Debug.LogWarning($"Tile {data.name} was clicked.");
             TileData dataToPaint = TilePainter.OnTilePainted?.Invoke();
             if (dataToPaint)
             {

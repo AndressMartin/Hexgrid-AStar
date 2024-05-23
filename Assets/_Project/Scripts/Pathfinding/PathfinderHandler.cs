@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PathfinderHandler : MonoBehaviour
 {
+    public static Action OnNewPathRequested;
+    
     [SerializeField] private Node startNode;
     [SerializeField] private Node endNode;
-    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private PathLineDrawer pathDrawer;
 
     private IList<ICell> path;
 
@@ -16,10 +19,12 @@ public class PathfinderHandler : MonoBehaviour
         HexPathfinder pathfinder = new();
         path = pathfinder.FindPathOnMap(startNode, endNode, new HexMap(nodes));
 
-        if (lineRenderer != null && path.Count > 1)
+        if (pathDrawer != null && path.Count > 1)
         {
-            DrawPath();
+            pathDrawer.DrawPath(path);
         }
+        
+        OnNewPathRequested += GenerateNewPath;
     }
 
     private Dictionary<Hex, ICell> GetNodesDictionary()
@@ -33,30 +38,14 @@ public class PathfinderHandler : MonoBehaviour
 
         return nodes;
     }
-
-    private void DrawPath()
+    
+    private void GenerateNewPath()
     {
-        lineRenderer.positionCount = path.Count;
+        path = new HexPathfinder().FindPathOnMap(startNode, endNode, new HexMap(GetNodesDictionary()));
 
-        for (int i = 0; i < path.Count; i++)
+        if (pathDrawer != null && path.Count > 1)
         {
-            Vector3 position = path[i].CellPosition;
-            lineRenderer.SetPosition(i, position);
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (startNode != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(startNode.transform.position, 0.1f);
-        }
-
-        if (endNode != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(endNode.transform.position, 0.1f);
+            pathDrawer.DrawPath(path);
         }
     }
 }
