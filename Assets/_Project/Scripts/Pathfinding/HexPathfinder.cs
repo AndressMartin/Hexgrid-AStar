@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HexPathfinder : IPathFinder
 {
+    public static Action OnPathFailed;
+    public static Action OnPathSuccess;
+
     public IList<ICell> FindPathOnMap(ICell cellStart, ICell cellEnd, IMap map)
     {
         Dictionary<Hex, ICell> cells = map.Cells;

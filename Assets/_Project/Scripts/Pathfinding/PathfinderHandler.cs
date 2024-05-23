@@ -28,10 +28,18 @@ public class PathfinderHandler : MonoBehaviour
 
         HexPathfinder pathfinder = new();
         path = pathfinder.FindPathOnMap(startNode, endNode, new HexMap(nodes));
-
-        if (pathDrawer != null && path.Count > 1)
+        if (path.Count > 0)
         {
-            pathDrawer.DrawPath(path);
+            HexPathfinder.OnPathSuccess?.Invoke();
+            if (pathDrawer != null && path.Count > 1)
+            {
+                pathDrawer.DrawPath(path);
+            }
+        }
+        else
+        {
+            pathDrawer.ClearPath();
+            HexPathfinder.OnPathFailed?.Invoke();
         }
         
         OnNewPathRequested += GenerateNewPath;
@@ -55,9 +63,18 @@ public class PathfinderHandler : MonoBehaviour
     {
         path = new HexPathfinder().FindPathOnMap(startNode, endNode, new HexMap(GetNodesDictionary()));
 
-        if (pathDrawer != null && path.Count > 1)
+        if (path.Count > 0)
         {
-            pathDrawer.DrawPath(path);
+            HexPathfinder.OnPathSuccess?.Invoke();
+            if (pathDrawer != null && path.Count > 1)
+            {
+                pathDrawer.DrawPath(path);
+            }
+        }
+        else
+        {
+            pathDrawer.ClearPath();
+            HexPathfinder.OnPathFailed?.Invoke();
         }
     }
     
